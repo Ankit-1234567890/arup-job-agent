@@ -1,0 +1,29 @@
+name: Daily Job Agent
+
+on:
+  schedule:
+    - cron: '30 2 * * *'  # প্রতিদিন UTC সকাল ২:৩০-এ চলবে (ভারতীয় সময় সকাল ৮:০০)
+  workflow_dispatch:      # ম্যানুয়ালি চালানোর অনুমতি দেয়
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run job agent script
+        env:
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: python agent.py
