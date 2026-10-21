@@ -12,7 +12,7 @@ import pandas as pd
 load_dotenv()
 
 EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
-EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD") Gmail App Password
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD") 
 RECIPIENT = EMAIL_ADDRESS  # Send to yourself
 
 # --- 1. YOUR PROFILE (edit these if your skills change) ---
