@@ -11,8 +11,8 @@ import pandas as pd
 # Load secrets from .env
 load_dotenv()
 
-EMAIL_ADDRESS = os.environ.get("com")
-EMAIL_PASSWORD = os.environ.get(")  # Gmail App Password
+EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD") Gmail App Password
 RECIPIENT = EMAIL_ADDRESS  # Send to yourself
 
 # --- 1. YOUR PROFILE (edit these if your skills change) ---
