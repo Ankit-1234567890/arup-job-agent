@@ -2,8 +2,8 @@ name: Daily Job Agent
 
 on:
   schedule:
-    - cron: '30 2 * * *'  # প্রতিদিন UTC সকাল ২:৩০-এ চলবে (ভারতীয় সময় সকাল ৮:০০)
-  workflow_dispatch:      # ম্যানুয়ালি চালানোর অনুমতি দেয়
+    - cron: '30 2 * * *' 
+  workflow_dispatch:      
 
 jobs:
   run-agent:
@@ -27,3 +27,15 @@ jobs:
           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: python agent.py
+      
+      - name: Send Email with matches
+        uses: step-security/action-send-mail@v6
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_ADDRESS }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: 🎯 Job Matches for Arup Pal
+          to: ${{ secrets.EMAIL_ADDRESS }}
+          from: Job Agent <${{ secrets.EMAIL_ADDRESS }}>
+          html_body: file://job_matches.html
