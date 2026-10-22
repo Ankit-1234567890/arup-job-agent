@@ -21,9 +21,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      
-      - name: Run job agent script
-        env:
-          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
-          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-        run: python agent.py
+              - name: Run job agent script
+      env:
+        EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+        BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+      run: python agent.py
