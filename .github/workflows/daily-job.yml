@@ -2,7 +2,7 @@ name: Daily Job Agent
 
 on:
   schedule:
-    - cron: '15 3 * * *' # Runs daily at 8:45 AM IST (Avoids GitHub peak hours)
+    - cron: '30 2 * * *' 
   workflow_dispatch:      
 
 jobs:
@@ -21,8 +21,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-              - name: Run job agent script
-      env:
-        EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
-        BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
-      run: python agent.py
+      
+      - name: Run job agent script
+        env:
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+        run: python agent.py
