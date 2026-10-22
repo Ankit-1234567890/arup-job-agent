@@ -6,14 +6,12 @@ from datetime import datetime
 from dotenv import load_dotenv
 from jobspy import scrape_jobs
 import pandas as pd
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
 
 # Load secrets from .env
 load_dotenv()
 
 EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
-SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY") # We are using SendGrid now
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY") # We are using SendGrid now
 RECIPIENT = EMAIL_ADDRESS 
 
 # --- 1. YOUR PROFILE ---
