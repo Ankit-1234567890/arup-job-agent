@@ -1,9 +1,9 @@
 import os
 import time
 import random
+import requests # Add this at the top of your file
 from datetime import datetime
 from dotenv import load_dotenv
-
 from jobspy import scrape_jobs
 import pandas as pd
 from sendgrid import SendGridAPIClient
@@ -114,20 +114,33 @@ def build_email_html(df):
     return html
 
 # --- 5. SEND EMAIL VIA SENDGRID API ---
+
+
+# --- REPLACE THE SEND_EMAIL FUNCTION WITH THIS ---
 def send_email(subject, body_html):
-    message = Mail(
-        from_email=EMAIL_ADDRESS,
-        to_emails=RECIPIENT,
-        subject=subject,
-        html_content=body_html
-    )
+    url = "https://api.brevo.com/v3/smtp/email"
+    
+    headers = {
+        "accept": "application/json",
+        "api-key": os.environ.get("BREVO_API_KEY"),
+        "content-type": "application/json"
+    }
+    
+    payload = {
+        "sender": {"name": "Job Agent", "email": EMAIL_ADDRESS},
+        "to": [{"email": RECIPIENT}],
+        "subject": subject,
+        "htmlContent": body_html
+    }
+    
     try:
-        sg = SendGridAPIClient(SENDGRID_API_KEY)
-        response = sg.send(message)
-        print(f"✅ Email sent via SendGrid! Status Code: {response.status_code}")
+        response = requests.post(url, json=payload, headers=headers)
+        if response.status_code == 201:
+            print(f"✅ Email sent via Brevo! Status Code: {response.status_code}")
+        else:
+            print(f"❌ Failed to send: {response.text}")
     except Exception as e:
-        print(f"❌ Failed to send email via SendGrid: {e}")
-        raise e
+        print(f"❌ Connection error: {e}")
 
 # --- 6. MAIN WORKFLOW ---
 def main():
