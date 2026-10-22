@@ -163,12 +163,10 @@ if __name__ == "__main__":
 
     if scored_jobs.empty:
         print("No jobs matched the criteria today. No email sent.")
-        # যদি জব না পায়, তবে খালি ফাইল তৈরি করবে
         with open("job_matches.html", "w", encoding="utf-8") as f:
             f.write("<p>No matching jobs found today.</p>")
     else:
         print(f"✅ Found {len(scored_jobs)} matching jobs. Writing HTML...")
         email_body = build_email_html(scored_jobs)
-        # HTML ফাইল হিসেবে সেভ করবে
         with open("job_matches.html", "w", encoding="utf-8") as f:
             f.write(email_body)
