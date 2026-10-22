@@ -1,5 +1,6 @@
 import os
 import smtplib
+import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -116,20 +117,25 @@ def build_email_html(df):
     html += "</table><p>Generated automatically by your AI Job Agent.</p></body></html>"
     return html
 
+
 # --- 5. SEND EMAIL ---
 def send_email(subject, body_html):
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = EMAIL_ADDRESS
     msg["To"] = RECIPIENT
-
     msg.attach(MIMEText(body_html, "html"))
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.send_message(msg)
-    print(f"✅ Email sent to {RECIPIENT}")
-
+    # Gmail-এর জন্য পোর্ট 587 এবং STARTTLS ব্যবহার করা হচ্ছে
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
+            server.starttls(context=ssl.create_default_context()) # সংযোগকে সুরক্ষিত করা
+            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            server.send_message(msg)
+        print(f"✅ Email sent to {RECIPIENT}")
+    except Exception as e:
+        print(f"❌ Failed to send email: {e}")
+        raise e # এররটি লগে দেখানোর জন্য
 # --- 6. MAIN WORKFLOW ---
 def main():
     print(f"🚀 Starting Job Agent at {datetime.now()}")
