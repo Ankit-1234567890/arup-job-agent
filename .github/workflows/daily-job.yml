@@ -2,7 +2,7 @@ name: Daily Job Agent
 
 on:
   schedule:
-    - cron: '30 2 * * *' 
+    - cron: '15 3 * * *' # Runs daily at 8:45 AM IST (Avoids GitHub peak hours)
   workflow_dispatch:      
 
 jobs:
@@ -25,18 +25,5 @@ jobs:
       - name: Run job agent script
         env:
           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
         run: python agent.py
-      
-      - name: Send Email with matches
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ${{ secrets.EMAIL_ADDRESS }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: 🎯 Job Matches for Arup Pal
-          to: ${{ secrets.EMAIL_ADDRESS }}
-          from: Job Agent <${{ secrets.EMAIL_ADDRESS }}>
-          html_body: file://job_matches.html
