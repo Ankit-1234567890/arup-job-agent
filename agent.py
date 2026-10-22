@@ -155,3 +155,20 @@ def main():
 
 if __name__ == "__main__":
     main()
+# agent.py - শেষের দিকে যোগ করুন
+if __name__ == "__main__":
+    print(f"🚀 Starting Job Agent at {datetime.now()}")
+    raw_jobs = fetch_jobs()
+    scored_jobs = score_jobs(raw_jobs)
+
+    if scored_jobs.empty:
+        print("No jobs matched the criteria today. No email sent.")
+        # যদি জব না পায়, তবে খালি ফাইল তৈরি করবে
+        with open("job_matches.html", "w", encoding="utf-8") as f:
+            f.write("<p>No matching jobs found today.</p>")
+    else:
+        print(f"✅ Found {len(scored_jobs)} matching jobs. Writing HTML...")
+        email_body = build_email_html(scored_jobs)
+        # HTML ফাইল হিসেবে সেভ করবে
+        with open("job_matches.html", "w", encoding="utf-8") as f:
+            f.write(email_body)
