@@ -1,3 +1,4 @@
-python-jobspy
+git+https://github.com/speedyapply/JobSpy.git
 pandas
 python-dotenv
+sendgrid
